@@ -87,7 +87,7 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
     
     //Exit the Meme
     @IBAction func cancelMeme(_ sender: AnyObject) {
-        //dummy now for Meme 1.0
+        
         dismiss(animated: true, completion: nil)
     }
     
@@ -100,7 +100,7 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
         cameraBarButton.isEnabled = UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera)
         
         shareButton.isEnabled  = (imagePickerView.image != nil)
-        //cancelButton.isEnabled = false
+        
         cancelButton.isEnabled = isFromOtherViewController
         
         self.subscribeToKeyboardNotifications()
@@ -133,14 +133,6 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
         toolBar.isHidden = true
         
         //Render view to an image
-        #if false
-        UIGraphicsBeginImageContext(view.frame.size)
-        view.drawHierarchy(in: view.frame, afterScreenUpdates: true)
-        let genMemedImage : UIImage = UIGraphicsGetImageFromCurrentImageContext()!
-        UIGraphicsEndImageContext()
-            vvvv
-        #endif
-        
         UIGraphicsBeginImageContext(view.frame.size)
         view.drawHierarchy(in: view.frame, afterScreenUpdates: true)
         let genMemedImage : UIImage = UIGraphicsGetImageFromCurrentImageContext()!
@@ -167,33 +159,7 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
     }
     
     // MARK: Util to setup Text Field
-    //# TODO: - refine it
-    
-
-    
-    struct MemeConstants {
-        static var paragraphStyle = { () -> NSMutableParagraphStyle in
-            var style = NSMutableParagraphStyle()
-            style.alignment = NSTextAlignment.center
-            return style
-        }
-        
-        static let memeTextAttributtes = [
-        NSStrokeColorAttributeName: UIColor.black,
-        NSForegroundColorAttributeName: UIColor.white,
-        NSFontAttributeName: UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
-        NSStrokeWidthAttributeName: -3.0,
-        NSParagraphStyleAttributeName: paragraphStyle
-        ] as [String : Any]
-        
-//        init(){
-//            MemeConstants.paragraphStyle.alignment = .center
-//        }
-    
-    }
-    
     private func setupTextField(textField: UITextField, defaultText: String) {
-        
         
         let style = NSMutableParagraphStyle()
         style.alignment = .center
@@ -206,12 +172,8 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
             NSParagraphStyleAttributeName: style
             ] as [String : Any]
         
-        
         textField.defaultTextAttributes = memeTextAttributtes
-        //need to put textAlignmnet after defaultTextAttributes assignment,otherwise the alignment will not make effect
-        ///textField.textAlignment = .center
         textField.delegate = memeDelegate
-        
         textField.text = defaultText
     }
     

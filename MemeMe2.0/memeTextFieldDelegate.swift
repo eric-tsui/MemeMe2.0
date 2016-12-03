@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 
 class memeTextFieldDelegate: NSObject, UITextFieldDelegate {
+    
     func textFieldDidBeginEditing(_ textField: UITextField) {
         textField.text = ""
     }

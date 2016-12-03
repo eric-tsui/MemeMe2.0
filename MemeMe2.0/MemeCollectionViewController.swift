@@ -35,6 +35,25 @@ class MemeCollectionViewController: UICollectionViewController {
         // Get memes data
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         memes = appDelegate.memes
+  
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+       
+        //Update Model
+        //To make sure the Meme is synced to latest data model in appDelegate
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        memes = appDelegate.memes
+        
+        //Update View
+        //Reload Collection View with updated data model
+        //Thus, the UICollectionViewCell will always be re-populated by calling
+        //override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell 
+        //Otherwise, the UICollectionViewCell will only display the cached view ? (not always re-populated)
+        self.collectionView?.reloadData()
+        
     }
     
     func startMemeEditor() {
@@ -45,11 +64,13 @@ class MemeCollectionViewController: UICollectionViewController {
     }
     
     //MARK : Collection View Data Source
+    
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return memes.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MemeCollectionViewCell", for: indexPath) as! MemeCollectionViewCell
         let meme = memes[indexPath.row]
         cell.memeImageView?.image = meme.memedImage

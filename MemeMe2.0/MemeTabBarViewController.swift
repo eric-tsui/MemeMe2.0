@@ -13,12 +13,11 @@ class MemeTabBarViewController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        print("AAA")
         // Do any additional setup after loading the view.
         
         // configure Navigation Item
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.add, target: self, action: #selector(MemeCollectionViewController.startMemeEditor))
-        print("BBBB")
+        
     }
     
     func startMemeEditor() {
