@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  MemeEditorViewController.swift
 //  MemeMe2.0
 //
 //  Created by EricTsui on 7/11/16.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MemeViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     
     // MARK: - Outlets
@@ -29,6 +29,12 @@ class MemeViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         case camera = 0
         case album  = 1
     }
+    
+    //To control cancel button display with 'cancelButton.isEnabled = isFromOtherViewController'
+    //Initially, disable cancel button by assigning 'isFromOtherViewController' to false
+    //Later, when it is presented from other View Controller, enable cancel button by assigning it to true
+    var isFromOtherViewController = false
+    
     //To hide status bar in Swift 3
     override var prefersStatusBarHidden: Bool {
         return true
@@ -67,17 +73,22 @@ class MemeViewController: UIViewController, UIImagePickerControllerDelegate, UIN
             (activityType, completed, returnedItem, error) in
             if completed {
                 self.saveMeme(image: latestMemedImage)
+                
+                // present table/collection view
+                let tabBarVC = self.storyboard!.instantiateViewController(withIdentifier: "MemeTabBarViewController") as! UITabBarController
+                //self.dismiss(animated: true, completion: nil)
+                self.present(tabBarVC, animated: true, completion: nil)
             }
         }
         
         // present the ActivityViewController
         present(shareVC, animated: true, completion: nil)
-
     }
     
     //Exit the Meme
     @IBAction func cancelMeme(_ sender: AnyObject) {
         //dummy now for Meme 1.0
+        dismiss(animated: true, completion: nil)
     }
     
     
@@ -89,7 +100,8 @@ class MemeViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         cameraBarButton.isEnabled = UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera)
         
         shareButton.isEnabled  = (imagePickerView.image != nil)
-        cancelButton.isEnabled = false
+        //cancelButton.isEnabled = false
+        cancelButton.isEnabled = isFromOtherViewController
         
         self.subscribeToKeyboardNotifications()
         
@@ -102,7 +114,7 @@ class MemeViewController: UIViewController, UIImagePickerControllerDelegate, UIN
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+                
         //Set up TextField attributes and defaultText
         setupTextField(textField: topTextField, defaultText: "TOP")
         setupTextField(textField: buttomTextField, defaultText: "BOTTOM")
@@ -121,10 +133,19 @@ class MemeViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         toolBar.isHidden = true
         
         //Render view to an image
+        #if false
         UIGraphicsBeginImageContext(view.frame.size)
         view.drawHierarchy(in: view.frame, afterScreenUpdates: true)
         let genMemedImage : UIImage = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
+            vvvv
+        #endif
+        
+        UIGraphicsBeginImageContext(view.frame.size)
+        view.drawHierarchy(in: view.frame, afterScreenUpdates: true)
+        let genMemedImage : UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+        
         
         //Show toolbar and navbar
         navigatonBar.isHidden = false
@@ -147,17 +168,48 @@ class MemeViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     
     // MARK: Util to setup Text Field
     //# TODO: - refine it
+    
+
+    
+    struct MemeConstants {
+        static var paragraphStyle = { () -> NSMutableParagraphStyle in
+            var style = NSMutableParagraphStyle()
+            style.alignment = NSTextAlignment.center
+            return style
+        }
+        
+        static let memeTextAttributtes = [
+        NSStrokeColorAttributeName: UIColor.black,
+        NSForegroundColorAttributeName: UIColor.white,
+        NSFontAttributeName: UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
+        NSStrokeWidthAttributeName: -3.0,
+        NSParagraphStyleAttributeName: paragraphStyle
+        ] as [String : Any]
+        
+//        init(){
+//            MemeConstants.paragraphStyle.alignment = .center
+//        }
+    
+    }
+    
     private func setupTextField(textField: UITextField, defaultText: String) {
+        
+        
+        let style = NSMutableParagraphStyle()
+        style.alignment = .center
+
         let memeTextAttributtes = [
             NSStrokeColorAttributeName: UIColor.black,
             NSForegroundColorAttributeName: UIColor.white,
             NSFontAttributeName: UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
-            NSStrokeWidthAttributeName: -3.0
+            NSStrokeWidthAttributeName: -3.0,
+            NSParagraphStyleAttributeName: style
             ] as [String : Any]
+        
         
         textField.defaultTextAttributes = memeTextAttributtes
         //need to put textAlignmnet after defaultTextAttributes assignment,otherwise the alignment will not make effect
-        textField.textAlignment = .center
+        ///textField.textAlignment = .center
         textField.delegate = memeDelegate
         
         textField.text = defaultText
@@ -185,8 +237,8 @@ class MemeViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     }
     
     private func subscribeToKeyboardNotifications(){
-        NotificationCenter.default.addObserver(self, selector: #selector(MemeViewController.keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(MemeViewController.keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(MemeEditorViewController.keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(MemeEditorViewController.keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
     private func unsubscribeToKeyboardNotifications(){
