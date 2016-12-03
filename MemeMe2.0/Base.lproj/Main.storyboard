@@ -25,11 +25,11 @@
             </objects>
             <point key="canvasLocation" x="-2594" y="-32"/>
         </scene>
-        <!--Table-->
+        <!--Navigation Controller-->
         <scene sceneID="QWK-8S-Hdi">
             <objects>
                 <navigationController id="Ib8-1z-Rjn" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Table" id="ycL-Xy-uqs"/>
+                    <tabBarItem key="tabBarItem" title="" image="tableIcon" id="ycL-Xy-uqs"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="35w-wE-Jxl">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -42,7 +42,7 @@
             </objects>
             <point key="canvasLocation" x="-1623" y="-312"/>
         </scene>
-        <!--Sent Memes(Table)-->
+        <!--Sent Memes-->
         <scene sceneID="mVi-kN-3cG">
             <objects>
                 <tableViewController id="mTJ-YN-0GN" customClass="MemeTableViewController" customModule="MemeMe2_0" customModuleProvider="target" sceneMemberID="viewController">
@@ -74,17 +74,17 @@
                             <outlet property="delegate" destination="mTJ-YN-0GN" id="fmf-Vh-Fh9"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Sent Memes(Table)" id="ElA-Kd-IGL"/>
+                    <navigationItem key="navigationItem" title="Sent Memes" id="ElA-Kd-IGL"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="g6r-XD-fK6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-815.20000000000005" y="-313.49325337331339"/>
         </scene>
-        <!--Collection-->
+        <!--Navigation Controller-->
         <scene sceneID="cNI-wR-9Wd">
             <objects>
                 <navigationController id="Bee-bk-7o4" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Collection" id="rGf-YU-vOc"/>
+                    <tabBarItem key="tabBarItem" title="" image="collectionIcon" id="rGf-YU-vOc"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="if3-vD-7JG">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -281,4 +281,8 @@
             <point key="canvasLocation" x="-3482" y="-34"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="collectionIcon" width="30" height="30"/>
+        <image name="tableIcon" width="30" height="30"/>
+    </resources>
 </document>
