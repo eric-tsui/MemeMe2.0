@@ -20,10 +20,6 @@ class MemeTableViewController: UITableViewController {
         // configure Navigation Item
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.add, target: self, action: #selector(MemeCollectionViewController.startMemeEditor))
         
-        // Get memes data
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        memes = appDelegate.memes
-        
     }
     
     func startMemeEditor() {
@@ -31,6 +27,22 @@ class MemeTableViewController: UITableViewController {
         
         self.present(memeEditorVC, animated: true, completion: nil)
         memeEditorVC.isFromOtherViewController = true
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        //Sync to Model, get memes data
+        //To make sure the Meme is synced to latest data model in appDelegate
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        memes = appDelegate.memes
+        
+        //Update View
+        //Reload Table View with updated data model
+        //Thus, the TableViewCell will always be re-populated by calling
+        //override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
+        //Otherwise, the UITableViewController will only display the cached view ? (not always re-populated)
+        self.tableView?.reloadData()
     }
     
     //MARK : Table View Delegate

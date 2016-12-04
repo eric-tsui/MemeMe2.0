@@ -73,11 +73,12 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
             (activityType, completed, returnedItem, error) in
             if completed {
                 self.saveMeme(image: latestMemedImage)
+
+                //Dismiss itself to return to the initial View Controller - Tab Bar View Controller
+                //Now since the Meme model data changed, need to reload data in TableViewController's viewWillAppear(),
+                //and notice that reload data in viewDidLoad() will not work well
+                self.dismiss(animated: true, completion: nil)
                 
-                // present table/collection view
-                let tabBarVC = self.storyboard!.instantiateViewController(withIdentifier: "MemeTabBarViewController") as! UITabBarController
-                //self.dismiss(animated: true, completion: nil)
-                self.present(tabBarVC, animated: true, completion: nil)
             }
         }
         
@@ -189,7 +190,8 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
         //Only the buttom Text Field needs to adjust the view
         if buttomTextField.isFirstResponder {
             //move the view when the keyboard covers the text field
-            self.view.frame.origin.y -= getKeyboardHeight(notification)
+            self.view.frame.origin.y = getKeyboardHeight(notification)*(-1)
+            
         }
     }
     

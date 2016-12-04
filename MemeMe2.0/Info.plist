@@ -4,6 +4,8 @@
 <dict>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Just a test</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Meme application need to access the camera to create a meme from a new photo</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleExecutable</key>

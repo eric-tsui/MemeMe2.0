@@ -23,9 +23,14 @@ class MemeDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
         // configure Navigation Item
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.edit, target: self, action: #selector(MemeDetailViewController.startMemeEditor))
-
+        
         self.tabBarController?.tabBar.isHidden = true
         
         imageView!.image = meme.memedImage
@@ -33,6 +38,7 @@ class MemeDetailViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        
         self.tabBarController?.tabBar.isHidden = false
     }
     
